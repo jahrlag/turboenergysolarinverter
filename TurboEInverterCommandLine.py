@@ -66,13 +66,10 @@ import paho.mqtt.publish as publish
 version				=	"alpha-2022041701"	# Program Version
 inverterConnection	=	ModbusSerialClient(method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='N', stopbits=1, bytesize=8)
 #inverterConnection	=	ModbusTCPClient(host="192.168.115.150", port=502, unit_id=1, auto_open=True)	# ModbusTPC not tested
-#MQTTBROKER			=	"192.168.1.2"
-MQTTBROKER			=	"test.mosquitto.org"
+MQTTBROKER			=	"YOUR MQTT BROWSER"
 MQTTPORT			=	1883
-#MQTTUSER			=	"mqttuser"
-MQTTUSER			=	""
-#MQTTPASSW			=	"mqttpass"
-MQTTPASSW			=	""
+MQTTUSER			=	"YOUR MQTT USER"
+MQTTPASSW			=	"YOUR MQTT PASS"
 MQTTTOPIC			=	"solar/inversor/turboenergy/"
 MQTTCLIENTID		=	"TurboEnergyData16487973615649784"	# Has to be unique
 
