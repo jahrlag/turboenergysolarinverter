@@ -64,17 +64,17 @@ import paho.mqtt.publish as publish
 # Global 
 #
 version				=	"alpha-2022041701"	# Program Version
-inverterConnection	=	ModbusSerialClient(method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='N', stopbits=1, bytesize=8)
-#inverterConnection	=	ModbusTCPClient(host="192.168.115.150", port=502, unit_id=1, auto_open=True)	# ModbusTPC not tested
+inverterConnection		=	ModbusSerialClient(method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='N', stopbits=1, bytesize=8)
+#inverterConnection		=	ModbusTCPClient(host="192.168.115.150", port=502, unit_id=1, auto_open=True)	# ModbusTPC not tested
 MQTTBROKER			=	"YOUR MQTT BROWSER"
 MQTTPORT			=	1883
 MQTTUSER			=	"YOUR MQTT USER"
 MQTTPASSW			=	"YOUR MQTT PASS"
 MQTTTOPIC			=	"solar/inversor/turboenergy/"
-MQTTCLIENTID		=	"TurboEnergyData16487973615649784"	# Has to be unique
+MQTTCLIENTID			=	"YOURUNIQECLIENTID"	# Has to be unique
 
 
-dataSet				=	[0]*2				# Inverter Registers from 59 to 172 and from 173 to 284
+dataSet			=	[0]*2				# Inverter Registers from 59 to 172 and from 173 to 284
 dataSet1From		=	59
 dataSet1Size		=	113
 dataSet2From		=	dataSet1From+dataSet1Size
