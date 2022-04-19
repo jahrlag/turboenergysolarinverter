@@ -19,9 +19,13 @@ Home Asisstant:
       - TurboE Total Battery Charge Power
       - TurboE Total Battery Discharge Power
 
+
 Energy panel sample:
+
 ![Energy Panel](20220420002744.jpg)
 
+
 Sample panel with many cards:
-![Energy Panel](20220420002744.jpg)
+
+![Energy Panel](20220420002703.jpg)
 
