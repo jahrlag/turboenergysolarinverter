@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 
 ###############################################
 #
@@ -66,12 +67,12 @@ import paho.mqtt.publish as publish
 version				=	"alpha-2022041701"	# Program Version
 inverterConnection		=	ModbusSerialClient(method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='N', stopbits=1, bytesize=8)
 #inverterConnection		=	ModbusTCPClient(host="192.168.115.150", port=502, unit_id=1, auto_open=True)	# ModbusTPC not tested
-MQTTBROKER			=	"YOUR MQTT BROWSER"
+MQTTBROKER			=	"YOUR MQTT BROKER"
 MQTTPORT			=	1883
 MQTTUSER			=	"YOUR MQTT USER"
-MQTTPASSW			=	"YOUR MQTT PASS"
+MQTTPASSW			=	"YOUR MQTT PASS "
 MQTTTOPIC			=	"solar/inversor/turboenergy/"
-MQTTCLIENTID			=	"YOURUNIQECLIENTID"	# Has to be unique
+MQTTCLIENTID			=	"YOURUNIQUEMQTTCLIENTID"	# Has to be unique
 
 
 dataSet			=	[0]*2				# Inverter Registers from 59 to 172 and from 173 to 284
@@ -84,8 +85,8 @@ dataSet2Size		=	113
 loopMode			=	True
 
 # Time in seconds beteen readings in loop mode
-highFreqDataDelay	=	10			# 0 = Run continuously
-lowFreqDataEvery	=	6
+highRateDataDelay	=	10			# 0 = Run continuously
+lowRateDataEvery	=	6
 
 
 #
@@ -305,8 +306,8 @@ try:
 
 
 		# Publish data
-		# High frequency data
-		#print("Dump High Freq Data")
+		# High rate data
+		#print("Dump High Rate Data")
 
 		inverterData.RunningState.publishDataToMQTT()
 		inverterData.GridSideRelayStatus.publishDataToMQTT()
@@ -327,10 +328,10 @@ try:
 		inverterData.GridExternalTotalPower.publishDataToMQTT()
 		inverterData.LoadSideTotalPower.publishDataToMQTT()
 
-		# Publish low freq data
-		if dataPublisedCounter % lowFreqDataEvery == 0:
+		# Publish low rate data
+		if dataPublisedCounter % lowRateDataEvery == 0:
 
-			#print("Dump Low Freq Data")
+			#print("Dump Low Rate Data")
 
 			# Home Assistant Energy panel data
 			#print("Total Grid Sell", inverterData.TotalGridSellPower.getData())
@@ -374,7 +375,7 @@ try:
 		if not loopMode:
 			continueReading = False
 		else:
-			time.sleep(highFreqDataDelay)
+			time.sleep(highRateDataDelay)
 			# To avoid lack of data, retry this iteration if some error ocurred getting data from the inverter.
 			if( not dataSet[0].isError() and not dataSet[1].isError()):
 				dataPublisedCounter += 1
@@ -385,7 +386,6 @@ except KeyboardInterrupt:
 		inverterConnection.close()
 
 	sys.exit()
-
 
 
 
