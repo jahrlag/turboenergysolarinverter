@@ -6,9 +6,7 @@ More information about the serial connection at https://github.com/kellerza/suns
 
 Modbus TCP should work but has not been tested.
 
-Tested on a Turbo Energy 5.5Kw
-
-Should be compatible with Deye and Sunsynk versions.
+Tested on a Turbo Energy 5.5Kw but should be compatible with Deye and Sunsynk versions.
 
 Configuration:
    - Change MQTT Broker configuration
