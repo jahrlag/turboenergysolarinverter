@@ -136,7 +136,7 @@ class Register:
 				if self.baseAddress in [90, 91, 95, 182]:
 					returnValue = returnValue - 1000
 				# Some values are represented as signed int
-				if self.baseAddress in [190, 172]:
+				if self.baseAddress in [190, 191, 172]:
 					if returnValue > 32767:
 						print(self.baseAddress)
 						print(returnValue)
