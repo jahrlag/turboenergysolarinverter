@@ -43,15 +43,8 @@
 #
 #
 
-################################################
-#
-#	Changelog
-#
-#	- alpha-2022041801: First public release
-#
-#
 
-
+###############################################
 #
 # Load required libraries
 #
@@ -64,18 +57,21 @@ import paho.mqtt.publish as publish
 #
 # Global 
 #
-version				=	"alpha-2022041701"	# Program Version
-inverterConnection		=	ModbusSerialClient(method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='N', stopbits=1, bytesize=8)
-#inverterConnection		=	ModbusTCPClient(host="192.168.115.150", port=502, unit_id=1, auto_open=True)	# ModbusTPC not tested
-MQTTBROKER			=	"YOUR MQTT BROKER"
+version				=	"alpha-2022050201"	# Program Version
+inverterConnection	=	ModbusSerialClient(method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='N', stopbits=1, bytesize=8)
+#inverterConnection	=	ModbusTCPClient(host="192.168.115.150", port=502, unit_id=1, auto_open=True)	# ModbusTPC not tested
+#MQTTBROKER			=	"192.168.1.2"
+MQTTBROKER			=	"test.mosquitto.org"
 MQTTPORT			=	1883
-MQTTUSER			=	"YOUR MQTT USER"
-MQTTPASSW			=	"YOUR MQTT PASS "
+#MQTTUSER			=	"mqttuser"
+MQTTUSER			=	""
+#MQTTPASSW			=	"mqttpass"
+MQTTPASSW			=	""
 MQTTTOPIC			=	"solar/inversor/turboenergy/"
-MQTTCLIENTID			=	"YOURUNIQUEMQTTCLIENTID"	# Has to be unique
+MQTTCLIENTID		=	"TurboEnergyData16487973615649784"	# Has to be unique
 
 
-dataSet			=	[0]*2				# Inverter Registers from 59 to 172 and from 173 to 284
+dataSet				=	[0]*2				# Inverter Registers from 59 to 172 and from 173 to 284
 dataSet1From		=	59
 dataSet1Size		=	113
 dataSet2From		=	dataSet1From+dataSet1Size
@@ -86,7 +82,7 @@ loopMode			=	True
 
 # Time in seconds beteen readings in loop mode
 highRateDataDelay	=	10			# 0 = Run continuously
-lowRateDataEvery	=	6
+lowRateDataEvery	=	5
 
 
 #
@@ -132,17 +128,60 @@ class Register:
 			if self.sizeOfRegister == 1:
 				#print("Dato con una dirección")
 				returnValue = dataSet[dataSetIndex].registers[registerIndex]
+
+				# Humanize Running State values.
+				if self.baseAddress == 59:
+					if returnValue == 0:
+						returnValue = "Stand By"
+					elif returnValue == 1:
+						returnValue = "Self Checking"
+					elif returnValue == 2:
+						returnValue = "Normal"
+					elif returnValue == 3:
+						returnValue = "Fault"
+
 				# Temperatures are calculated as data-1000 in register. 1000 = 0ºC. Add them on this list
 				if self.baseAddress in [90, 91, 95, 182]:
 					returnValue = returnValue - 1000
 				# Some values are represented as signed int
 				if self.baseAddress in [190, 191, 172]:
 					if returnValue > 32767:
-						print(self.baseAddress)
-						print(returnValue)
+						#print(self.baseAddress)
 						returnValue -= 65535
-						print(returnValue)
 				returnValue *= self.multiplier
+
+				# Humanize Grid Side Relay Status
+				if self.baseAddress in [194]:
+					if returnValue == 1:
+						returnValue = "on"
+					elif returnValue == 0:
+						returnValue = "off"
+					else:
+						returnValue = "unknown"
+
+				# Humanize Time of Use Selling
+				if self.baseAddress == 248:
+					if (returnValue & int("11111111",2)) == 0xFF:
+						returnValue = "on"
+					elif (returnValue & int("11111111",2)) == 0x00:
+						returnValue = "off"
+					# Time of Use Selling dumpt the time table too
+					#returnValue = [returnValue, "linea 1", "linea 2", "linea 3", "linea 4", "linea 5", "linea 6" ]
+					
+
+				# Humanize Grid Mode
+				if self.baseAddress == 284:
+					if returnValue == 0:
+						returnValue = "General_Standard"
+					elif returnValue == 1:
+						returnValue = "UL1741&IEE1547"
+					elif returnValue == 2:
+						returnValue = "CPUC_RULE21"
+					elif returnValue == 3:
+						returnValue = "SRD-UL1741"
+
+
+			# 
 			if self.sizeOfRegister == 2:
 				#print("Datos con dos direcciones")
 				#print("Primera palabra ",dataSet[dataSetIndex].registers[registerIndex])
@@ -174,8 +213,13 @@ class Register:
 		if registerData != "NotValid":
 			#print("El valor es válido")
 			try:
+				# PEPE. Vo por aquí. Si registerData es un array de más de un elemento, el primero es el valory el resto van al topic /attributes
+				#if self.baseAddress == 248:
+				#	print("Attributes")
+			
 				publish.single(topic=MQTTTOPIC+self.registerName.lower(), payload=registerData, hostname=MQTTBROKER,
 							   port=MQTTPORT, client_id=MQTTCLIENTID)#, auth = {'username':MQTTUSER, 'password':MQTTPASSW})
+				#print("Dumped to mqtt")
 				returnValue = True
 			except:
 				print("Error publishing to MQTT broker")
