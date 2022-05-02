@@ -1,0 +1,11 @@
+	- alpha-2022041801: First public release
+	- alpha-2022050201:
+      - Breaking change: Change mqtt sensors config and names.
+			- Breaking change: Humanize Time Of Use Selling. Change definition to binary_sensor.
+  		- Breaking change: Humanize Grid Side Relay Status. Change definition to binary_sensor.
+      - Humanize Running State values.
+      - Humanize Grid Side Relay Status.
+      - Humanize Time of Use Selling.
+      - Humanize Grid Mode.
+      
+
