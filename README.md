@@ -21,7 +21,7 @@ Tested on Linux. If you use Windows, you should change the serial por name:
 Home Asisstant:
    - You need an MQTT Broker.
    - Add the content of the configuration.yaml to your Home Assistant configuration.yaml and restart.
-   - Configure the Energy panel with the following entities:
+   - Configure the Energy panel using the following entities:
       - TurboE Total Grid Buy Power
       - TurboE Total Grid Sell Power 
       - TurboE Hist PV Power
