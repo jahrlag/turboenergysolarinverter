@@ -13,7 +13,7 @@ Configuration:
    - Change serial port
    - Change data rate
 
-Tested on Linux. If you use Windows, you should change the serial por name:
+Tested on Linux. If you use Windows, you should change the serial port name:
    -  /dev/ttyUSB0 --> COM1
    -  /dev/ttyUSB1 --> COM2
    -  etc
