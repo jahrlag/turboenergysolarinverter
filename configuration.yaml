@@ -1,21 +1,5 @@
+
 sensor:
- 
-  - platform: mqtt
-    name: "Turbo Energy PV1 Input Power"
-    unique_id: turbo_energy_pv1_input_power
-    device_class: power
-    state_class: measurement
-    unit_of_measurement: W
-    state_topic: "solar/inversor/turboenergy/pv1inputpower"
-
-  - platform: mqtt
-    name: "Turbo Energy PV2 Input Power"
-    unique_id: turbo_energy_pv2_input_power
-    device_class: power
-    state_class: measurement
-    unit_of_measurement: W
-    state_topic: "solar/inversor/turboenergy/pv2inputpower"
-
   - platform: template
     sensors:
         totalpvinput:
@@ -23,307 +7,253 @@ sensor:
             unique_id: turbo_energy_total_pv_input
             device_class: power
             unit_of_measurement: 'W'
-            value_template: '{{ states("sensor.turbo_energy_pv1_input_power") | int + states("sensor.turbo_energy_pv2_input_power") | int }}'
+            value_template: '{{ states("sensor.turbo_energy_pv1_input_power") | int + states("sensor.turbo_energy_pv2_input_power") | int + states("sensor.turbo_energy_gen_micro_inverter_power_input") | int }}'
             #value_template: '{{ states("sensor.pv1inputpower") |float + states("sensor.pv2inputpower") | float }}'
 
-  - platform: mqtt
-    name: "Turbo Energy Running State"
-    unique_id: turbo_energy_running_state
-    state_class: measurement
-    state_topic: "solar/inversor/turboenergy/runningstate"
+mqtt:
+  sensor:
+    - state_topic: "solar/inversor/turboenergy/pv1inputpower"
+      name: "Turbo Energy PV1 Input Power"
+      unique_id: turbo_energy_pv1_input_power
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+    - state_topic: "solar/inversor/turboenergy/pv2inputpower"
+      name: "Turbo Energy PV2 Input Power"
+      unique_id: turbo_energy_pv2_input_power
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+    - state_topic: "solar/inversor/turboenergy/gendomicroinvpowerinput"
+      name: "Turbo Energy Gen Micro Inverter Power Input"
+      unique_id: turbo_energy_gen_micro_inverter_power_input
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+    - state_topic: "solar/inversor/turboenergy/runningstate"
+      name: "Turbo Energy Running State"
+      unique_id: turbo_energy_running_state
+      state_class: measurement
+    - state_topic: "solar/inversor/turboenergy/dayactivepower"
+      name: "Turbo Energy Day Active Power"
+      unique_id: turbo_energy_day_active_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/totalactivepower"
+      name: "Turbo Energy Total Active Power"
+      unique_id: turbo_energy_total_active_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/daybattcharge"
+      name: "Turbo Energy Day Batt Charge"
+      unique_id: turbo_energy_day_batt_charge
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/daybattdischarge"
+      name: "Turbo Energy Day Batt Discharge"
+      unique_id: turbo_energy_day_batt_discharge
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/daygridbuypower"
+      name: "Turbo Energy Day Grid Buy Power"
+      unique_id: turbo_energy_day_grid_buy_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/daygridsellpower"
+      name: "Turbo Energy Day Grid Sell Power"
+      unique_id: turbo_energy_day_grid_sell_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/dayloadpower"
+      name: "Turbo Energy Day Load Power"
+      unique_id: turbo_energy_day_load_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/daypvpower"
+      name: "Turbo Energy Day PV Power"
+      unique_id: turbo_energy_day_pv_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/totalloadpower"
+      name: "Turbo Energy Total Load Power"
+      unique_id: turbo_energy_total_load_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/yearloadpower"
+      name: "Turbo Energy Year Load Power"
+      unique_id: turbo_energy_year_load_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/radiatortempdc"
+      name: "Turbo Energy Radiator Temp DC"
+      unique_id: turbo_energy_radiator_temp_dc
+      device_class: temperature
+      state_class: measurement
+      unit_of_measurement: ºC
+    - state_topic: "solar/inversor/turboenergy/igbttemp"
+      name: "Turbo Energy IGBT Temp"
+      unique_id: turbo_energy_igbt_temp
+      device_class: temperature
+      state_class: measurement
+      unit_of_measurement: ºC
+    - state_topic: "solar/inversor/turboenergy/inductance1temp"
+      name: "Turbo Energy Inductance1 Temp"
+      unique_id: turbo_energy_inductance1_temp
+      device_class: temperature
+      state_class: measurement
+      unit_of_measurement: ºC
+    - state_topic: "solar/inversor/turboenergy/environmenttemp"
+      name: "Turbo Energy Environment Temp"
+      unique_id: turbo_energy_environment_temp
+      device_class: temperature
+      state_class: measurement
+      unit_of_measurement: ºC
+    - state_topic: "solar/inversor/turboenergy/histpvpower"
+      name: "Turbo Energy Hist PV Power"
+      unique_id: turbo_energy_hist_pv_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    - state_topic: "solar/inversor/turboenergy/dcvoltage1"
+      name: "Turbo Energy DC Voltage 1"
+      unique_id: turbo_energy_dc_voltage_1
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+    - state_topic: "solar/inversor/turboenergy/dccurrent1"
+      name: "Turbo Energy DC Current 1"
+      unique_id: turbo_energy_dc_current_1
+      device_class: current
+      state_class: measurement
+      unit_of_measurement: A
+    - state_topic: "solar/inversor/turboenergy/dcvoltage2"
+      name: "Turbo Energy DC Voltage 2"
+      unique_id: turbo_energy_dc_voltage_2
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+    - state_topic: "solar/inversor/turboenergy/dccurrent2"
+      name: "Turbo Energy DC Current 2"
+      unique_id: turbo_energy_dc_current_2
+      device_class: current
+      state_class: measurement
+      unit_of_measurement: A
+    - state_topic: "solar/inversor/turboenergy/gridexternaltotalpower"
+      name: "Turbo Energy Grid External Total Power"
+      unique_id: turbo_energy_grid_external_total_power
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+    - state_topic: "solar/inversor/turboenergy/gridsidevoltagel1n"
+      name: "Turbo Energy Grid Side Voltage L1 N"
+      unique_id: turbo_energy_grid_side_voltage_l1_n
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+    - state_topic: "solar/inversor/turboenergy/loadvoltagel1"
+      name: "Turbo Energy Load Voltage L1"
+      unique_id: turbo_energy_load_voltage_l1
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+    - state_topic: "solar/inversor/turboenergy/loadsidetotalpower"
+      name: "Turbo Energy Load Side Total Power"
+      unique_id: turbo_energy_load_side_total_power
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+    - state_topic: "solar/inversor/turboenergy/batterytemperature"
+      name: "Turbo Energy Battery Temperature"
+      unique_id: turbo_energy_battery_temperature
+      device_class: temperature
+      state_class: measurement
+      unit_of_measurement: ºC
+    - state_topic: "solar/inversor/turboenergy/batteryvoltage"
+      name: "Turbo Energy Battery Voltage"
+      unique_id: turbo_energy_battery_voltage
+      device_class: voltage
+      state_class: measurement
+      unit_of_measurement: V
+    - state_topic: "solar/inversor/turboenergy/batterycapacity"
+      name: "Turbo Energy BatteryCapacity"
+      unique_id: turbo_energy_battery_capacity
+      device_class: battery
+      state_class: measurement
+      unit_of_measurement: "%"
+    - state_topic: "solar/inversor/turboenergy/batteryoutputpower"
+      name: "Turbo Energy Battery Output Power"
+      unique_id: turbo_energy_battery_output_power
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+    - state_topic: "solar/inversor/turboenergy/batteryoutputcurrent"
+      name: "Turbo Energy Battery Output Current"
+      unique_id: turbo_energy_battery_output_current
+      device_class: current
+      state_class: measurement
+      unit_of_measurement: A
+    - state_topic: "solar/inversor/turboenergy/gridmode"
+      name: "Turbo Energy Grid Mode"
+      unique_id: turbo_energy_grid_mode
+      state_class: measurement
+    # Energy Panel
+    - state_topic: "solar/inversor/turboenergy/histpvpower"
+      name: "Turbo Energy Hist PV Power"
+      unique_id: turbo_energy_hist_pv_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    # Energy Panel
+    - state_topic: "solar/inversor/turboenergy/totalgridbuypower"
+      name: "Turbo Energy Total Grid Buy Power"
+      unique_id: turbo_energy_total_grid_buy_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    # Energy Panel
+    - state_topic: "solar/inversor/turboenergy/totalgridsellpower"#
+      name: "Turbo Energy Total Grid Sell Power "
+      unique_id: turbo_energy_total_grid_sell_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    # Energy Panel
+    - state_topic: "solar/inversor/turboenergy/totalbatterychargepower"
+      name: "Turbo Energy Total Battery Charge Power"
+      unique_id: turbo_energy_total_battery_charge_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
+    # Energy Panel
+    - state_topic: "solar/inversor/turboenergy/totalbatterydischargepower"
+      name: "Turbo Energy Total Battery Discharge Power"
+      unique_id: turbo_energy_total_battery_discharge_power
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
 
-  - platform: mqtt
-    name: "Turbo Energy Day Active Power"
-    unique_id: turbo_energy_day_active_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/dayactivepower"
+  binary_sensor:
+    - state_topic: "solar/inversor/turboenergy/timeofuseselling"
+      name: "Turbo Energy Time Of Use Selling"
+      unique_id: turbo_energy_time_of_use_selling
+      device_class: running
+      payload_on: "on"
+      payload_off: "off"
+      json_attributes_topic: "solar/inversor/turboenergy/timeofuseselling/attributes"
+    - state_topic: "solar/inversor/turboenergy/gridsiderelaystatus"
+      name: "Turbo Energy Grid Side Relay Status"
+      unique_id: turbo_energy_grid_side_relay_status
+      device_class: plug
+      payload_on: "on"
+      payload_off: "off"
 
-  - platform: mqtt
-    name: "Turbo Energy Total Active Power"
-    unique_id: turbo_energy_total_active_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/totalactivepower"
-
-  - platform: mqtt
-    name: "Turbo Energy Day Batt Charge"
-    unique_id: turbo_energy_day_batt_charge
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/daybattcharge"
-    
-  - platform: mqtt
-    name: "Turbo Energy Day Batt Discharge"
-    unique_id: turbo_energy_day_batt_discharge
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/daybattdischarge"
-
-  - platform: mqtt
-    name: "Turbo Energy Day Grid Buy Power"
-    unique_id: turbo_energy_day_grid_buy_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/daygridbuypower"
-
-  - platform: mqtt
-    name: "Turbo Energy Day Grid Sell Power"
-    unique_id: turbo_energy_day_grid_sell_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/daygridsellpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Day Load Power"
-    unique_id: turbo_energy_day_load_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/dayloadpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Day PV Power"
-    unique_id: turbo_energy_day_pv_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/daypvpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Total Load Power"
-    unique_id: turbo_energy_total_load_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/totalloadpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Year Load Power"
-    unique_id: turbo_energy_year_load_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/yearloadpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Radiator Temp DC"
-    unique_id: turbo_energy_radiator_temp_dc
-    device_class: temperature
-    state_class: measurement
-    unit_of_measurement: ºC
-    state_topic: "solar/inversor/turboenergy/radiatortempdc"
-
-  - platform: mqtt
-    name: "Turbo Energy IGBT Temp"
-    unique_id: turbo_energy_igbt_temp
-    device_class: temperature
-    state_class: measurement
-    unit_of_measurement: ºC
-    state_topic: "solar/inversor/turboenergy/igbttemp"
-
-  - platform: mqtt
-    name: "Turbo Energy Inductance1 Temp"
-    unique_id: turbo_energy_inductance1_temp
-    device_class: temperature
-    state_class: measurement
-    unit_of_measurement: ºC
-    state_topic: "solar/inversor/turboenergy/inductance1temp"
-
-  - platform: mqtt
-    name: "Turbo Energy Environment Temp"
-    unique_id: turbo_energy_environment_temp
-    device_class: temperature
-    state_class: measurement
-    unit_of_measurement: ºC
-    state_topic: "solar/inversor/turboenergy/environmenttemp"
-
-  - platform: mqtt
-    name: "Turbo Energy Hist PV Power"
-    unique_id: turbo_energy_hist_pv_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/histpvpower"
-
-  - platform: mqtt
-    name: "Turbo Energy DC Voltage 1"
-    unique_id: turbo_energy_dc_voltage_1
-    device_class: voltage
-    state_class: measurement
-    unit_of_measurement: V
-    state_topic: "solar/inversor/turboenergy/dcvoltage1"
-
-  - platform: mqtt
-    name: "Turbo Energy DC Current 1"
-    unique_id: turbo_energy_dc_current_1
-    device_class: current
-    state_class: measurement
-    unit_of_measurement: A
-    state_topic: "solar/inversor/turboenergy/dccurrent1"
-
-  - platform: mqtt
-    name: "Turbo Energy DC Voltage 2"
-    unique_id: turbo_energy_dc_voltage_2
-    device_class: voltage
-    state_class: measurement
-    unit_of_measurement: V
-    state_topic: "solar/inversor/turboenergy/dcvoltage2"
-
-  - platform: mqtt
-    name: "Turbo Energy DC Current 2"
-    unique_id: turbo_energy_dc_current_2
-    device_class: current
-    state_class: measurement
-    unit_of_measurement: A
-    state_topic: "solar/inversor/turboenergy/dccurrent2"
-
-  - platform: mqtt
-    name: "Turbo Energy Grid External Total Power"
-    unique_id: turbo_energy_grid_external_total_power
-    device_class: power
-    state_class: measurement
-    unit_of_measurement: W
-    state_topic: "solar/inversor/turboenergy/gridexternaltotalpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Grid Side Voltage L1 N"
-    unique_id: turbo_energy_grid_side_voltage_l1_n
-    device_class: voltage
-    state_class: measurement
-    unit_of_measurement: V
-    state_topic: "solar/inversor/turboenergy/gridsidevoltagel1n"
-
-  - platform: mqtt
-    name: "Turbo Energy Load Voltage L1"
-    unique_id: turbo_energy_load_voltage_l1
-    device_class: voltage
-    state_class: measurement
-    unit_of_measurement: V
-    state_topic: "solar/inversor/turboenergy/loadvoltagel1"
-
-  - platform: mqtt
-    name: "Turbo Energy Load Side Total Power"
-    unique_id: turbo_energy_load_side_total_power
-    device_class: power
-    state_class: measurement
-    unit_of_measurement: W
-    state_topic: "solar/inversor/turboenergy/loadsidetotalpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Battery Temperature"
-    unique_id: turbo_energy_battery_temperature
-    device_class: temperature
-    state_class: measurement
-    unit_of_measurement: ºC
-    state_topic: "solar/inversor/turboenergy/batterytemperature"
-
-  - platform: mqtt
-    name: "Turbo Energy Battery Voltage"
-    unique_id: turbo_energy_battery_voltage
-    device_class: voltage
-    state_class: measurement
-    unit_of_measurement: V
-    state_topic: "solar/inversor/turboenergy/batteryvoltage"
-
-  - platform: mqtt
-    name: "Turbo Energy BatteryCapacity"
-    unique_id: turbo_energy_battery_capacity
-    device_class: battery
-    state_class: measurement
-    unit_of_measurement: "%"
-    state_topic: "solar/inversor/turboenergy/batterycapacity"
-
-  - platform: mqtt
-    name: "Turbo Energy Battery Output Power"
-    unique_id: turbo_energy_battery_output_power
-    device_class: power
-    state_class: measurement
-    unit_of_measurement: W
-    state_topic: "solar/inversor/turboenergy/batteryoutputpower"
-
-  - platform: mqtt
-    name: "Turbo Energy Battery Output Current"
-    unique_id: turbo_energy_battery_output_current
-    device_class: current
-    state_class: measurement
-    unit_of_measurement: A
-    state_topic: "solar/inversor/turboenergy/batteryoutputcurrent"
-
-  - platform: mqtt
-    name: "Turbo Energy Grid Mode"
-    unique_id: turbo_energy_grid_mode
-    state_class: measurement
-    state_topic: "solar/inversor/turboenergy/gridmode"
-
-
-    # Para el panel de Energía
-  - platform: mqtt
-    name: "Turbo Energy Hist PV Power"
-    unique_id: turbo_energy_hist_pv_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/histpvpower"
-
-    # Para el panel de Energía
-  - platform: mqtt
-    name: "Turbo Energy Total Grid Buy Power"
-    unique_id: turbo_energy_total_grid_buy_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/totalgridbuypower"
-
-    # Para el panel de Energía
-  - platform: mqtt
-    name: "Turbo Energy Total Grid Sell Power "
-    unique_id: turbo_energy_total_grid_sell_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/totalgridsellpower"
-
-    # Para el panel de Energía
-  - platform: mqtt
-    name: "Turbo Energy Total Battery Charge Power"
-    unique_id: turbo_energy_total_battery_charge_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/totalbatterychargepower"
-
-    # Para el panel de Energía
-  - platform: mqtt
-    name: "Turbo Energy Total Battery Discharge Power"
-    unique_id: turbo_energy_total_battery_discharge_power
-    device_class: energy
-    state_class: total_increasing
-    unit_of_measurement: kWh
-    state_topic: "solar/inversor/turboenergy/totalbatterydischargepower"
-
-
-binary_sensor:
- 
-  - platform: mqtt
-    name: "Turbo Energy Time Of Use Selling"
-    unique_id: turbo_energy_time_of_use_selling
-    device_class: running
-    payload_on: "on"
-    payload_off: "off"
-    state_topic: "solar/inversor/turboenergy/timeofuseselling"
-    json_attributes_topic: "solar/inversor/turboenergy/timeofuseselling/attributes"
-
-  - platform: mqtt
-    name: "Turbo Energy Grid Side Relay Status"
-    unique_id: turbo_energy_grid_side_relay_status
-    device_class: plug
-    payload_on: "on"
-    payload_off: "off"
-    state_topic: "solar/inversor/turboenergy/gridsiderelaystatus"
